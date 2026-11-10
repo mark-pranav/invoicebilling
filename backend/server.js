@@ -1,4 +1,6 @@
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -29,14 +31,28 @@ app.use('/api/invoices', invoiceRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/settings', settingsRoutes);
 
+const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get(/.*/, (req, res, next) => {
+    if (req.path === '/api' || req.path.startsWith('/api/')) {
+      return next();
+    }
+
+    res.sendFile(path.join(frontendDistPath, 'index.html'), (err) => {
+      if (err) next(err);
+    });
+  });
+}
+
 app.use(notFound);
 app.use(errorHandler);
 
 const start = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server listening on port ${PORT}`);
     });
   } catch (err) {
     console.error('Failed to start server:', err.message);

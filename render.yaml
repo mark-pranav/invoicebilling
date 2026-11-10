@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: invoice-billing
+    runtime: node
+    buildCommand: npm run install:all && npm run build --prefix frontend
+    startCommand: npm start --prefix backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: USE_MEMORY_DB
+        value: "false"
+      - key: MONGODB_URI
+        sync: false
