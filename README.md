@@ -52,10 +52,14 @@ The Blueprint sets `NODE_ENV=production` and `USE_MEMORY_DB=false`, and Render
 provides `PORT` automatically. The frontend calls `/api` on the same host, so
 no `VITE_API_URL` setting is needed. For a manual Web Service setup, use:
 
-- **Build command:** `npm run install:all && npm run build --prefix frontend`
-- **Start command:** `npm start --prefix backend`
+- **Build command:** `npm run install:all && npm run build`
+- **Start command:** `npm start`
 - **Environment variables:** `MONGODB_URI` (your MongoDB connection string),
   `USE_MEMORY_DB=false`, and `NODE_ENV=production`
+
+Do not use `npm run dev` as the Render start command; it is only for local
+development. If the service was created manually, update its Start Command to
+`npm start` (or redeploy it from this Blueprint).
 
 ## First-time usage
 
