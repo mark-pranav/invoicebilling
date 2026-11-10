@@ -64,6 +64,21 @@ development. If the service was created manually, update its Start Command to
 (or redeploy it from this Blueprint). Installing only at the repository root
 does not install the backend's dependencies.
 
+### Deploy the frontend as a separate Static Site
+
+If the backend is already deployed separately, create a **Static Site** in
+Render from this repository and configure:
+
+- **Root Directory:** `frontend`
+- **Build Command:** `npm install && npm run build`
+- **Publish Directory:** `dist`
+- **Environment Variable:** `VITE_API_URL=https://invoicebilling.onrender.com`
+
+The frontend adds `/api` to this backend URL automatically. The backend
+currently allows cross-origin requests, so no frontend URL needs to be added
+to its CORS configuration. Set `VITE_API_URL` in Render before building; Vite
+embeds it into the generated frontend bundle.
+
 ## First-time usage
 
 1. Open **Shop Settings** and set business name + state (required for correct GST).
