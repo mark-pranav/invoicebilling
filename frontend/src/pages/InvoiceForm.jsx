@@ -151,6 +151,21 @@ export default function InvoiceForm() {
     setItems((prev) => (prev.length === 1 ? prev : prev.filter((_, i) => i !== index)));
   };
 
+  const handleEnterToNext = (e) => {
+    if (e.key !== 'Enter' || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+
+    const target = e.target;
+    if (!(target instanceof HTMLElement) || !target.matches('input, select, textarea')) return;
+
+    const fields = Array.from(
+      e.currentTarget.querySelectorAll('input:not([type="hidden"]), select, textarea')
+    ).filter((field) => !field.disabled && field.getClientRects().length > 0);
+    const nextField = fields[fields.indexOf(target) + 1];
+
+    e.preventDefault();
+    (nextField || e.currentTarget.querySelector('button[type="submit"]'))?.focus();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -219,7 +234,7 @@ export default function InvoiceForm() {
   if (loading) return <Loading label="Loading invoice..." />;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} onKeyDown={handleEnterToNext} className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900">
@@ -363,13 +378,6 @@ export default function InvoiceForm() {
       <section className="rounded-lg border border-slate-200 bg-white p-5">
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="font-semibold text-slate-800">Invoice Items</h2>
-          <button
-            type="button"
-            onClick={addItem}
-            className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
-          >
-            <Plus size={14} /> Add Item
-          </button>
         </div>
 
         <div className="space-y-4">
@@ -484,6 +492,15 @@ export default function InvoiceForm() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            onClick={addItem}
+            className="inline-flex items-center gap-1 rounded-md bg-[#1e3a5f] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#16304f] focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:ring-offset-2"
+          >
+            <Plus size={14} /> Add Item
+          </button>
         </div>
       </section>
 
