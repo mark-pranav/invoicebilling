@@ -494,13 +494,22 @@ export default function InvoiceForm() {
           ))}
         </div>
         <div className="mt-3 flex justify-end">
-          <button
-            type="button"
-            onClick={addItem}
-            className="inline-flex items-center gap-1 rounded-md bg-[#1e3a5f] px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#16304f] focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:ring-offset-2"
-          >
-            <Plus size={14} /> Add Item
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={addItem}
+              className="inline-flex items-center gap-1 rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-[#1e3a5f] shadow-sm hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:ring-offset-2"
+            >
+              <Plus size={14} /> Add Item
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-md bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white hover:bg-[#16304f] disabled:opacity-60"
+            >
+              {saving ? 'Saving...' : isEdit ? 'Update Invoice' : 'Save Invoice'}
+            </button>
+          </div>
         </div>
       </section>
 
